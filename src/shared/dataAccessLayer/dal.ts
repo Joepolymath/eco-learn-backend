@@ -1,6 +1,7 @@
 import { Document, FilterQuery, Model, Types } from 'mongoose';
+import { IDataRepo } from '../types/abstractions/data';
 
-class DAL<T extends Document> {
+class DAL<T extends Document> implements IDataRepo<T> {
   protected model: Model<T>;
   constructor(model: Model<T>) {
     this.model = model;
