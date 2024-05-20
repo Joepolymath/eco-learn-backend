@@ -6,6 +6,7 @@ import HttpException from '../../../shared/utils/exceptions/http.exceptions';
 import bcrypt from '../utils/bcrypt';
 import { BCRYPT_SALT } from '../../../shared/configs/env.config';
 import responseUtils from '../../../shared/utils/response.utils';
+import { generateUserId } from '../utils/random.utils';
 
 class UserServices {
   constructor(private userRepo: IDataRepo<IUser> = new UserRepo(userModel)) {}
@@ -21,6 +22,13 @@ class UserServices {
       <string>payload.password,
       hashSalt
     );
+
+    payload.userId = generateUserId();
+    let foundUserId = await this.userRepo.findOne({ userId: payload.userId });
+    while (foundUserId) {
+      payload.userId = generateUserId();
+      foundUserId = await this.userRepo.findOne({ userId: payload.userId });
+    }
 
     const newUser = await this.userRepo.create(payload);
     const savedUser = await this.userRepo.save(newUser);

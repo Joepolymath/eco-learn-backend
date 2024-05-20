@@ -1,10 +1,21 @@
 import { Response } from 'express';
 import serverResponseStatus from '../constants/serverResponseStatus.constant';
 
+export interface IResponse {
+  status: string;
+  statusCode: number;
+  message: string;
+  [key: string]: any;
+}
+
 class ResponseUtils {
-  public buildResponse(response: any) {
+  public buildResponse(response: {
+    [key: string]: any;
+    message: string;
+  }): IResponse {
     return {
       ...response,
+      message: response.message,
       status: serverResponseStatus.RESPONSE_STATUS_SUCCESS,
       statusCode: serverResponseStatus.OK,
     };

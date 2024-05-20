@@ -8,9 +8,14 @@ import App from '../app';
 // import AuthController from '../modules/auth/auth.controller';
 import connectDb from '../shared/configs/db.config';
 
-const app = new App([
-  //   new AuthController(),
-]);
+import UserServices from '../modules/users/services';
+import UserController from '../modules/users/controllers';
+import { IUserService } from '../modules/users/types/abstractions';
+
+const userServices: IUserService = new UserServices();
+const userController = new UserController(userServices);
+
+const app = new App([userController]);
 
 const debug = debugLib('eco-learn:server');
 
