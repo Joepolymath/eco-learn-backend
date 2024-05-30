@@ -3,18 +3,24 @@ import http from 'http';
 import debugLib from 'debug';
 import 'module-alias';
 import { PORT, DB_URI } from '../shared/configs/env.config';
+import connectPgDb from '../shared/configs/db/pg.config';
 import logger from '../shared/configs/logs.config';
 import App from '../app';
 // import AuthController from '../modules/auth/auth.controller';
-import connectDb from '../shared/configs/db.config';
+import connectMongoDb from '../shared/configs/db/mongo.config';
 
 import { userController, authController } from './deps';
+import DatabaseFactory from '../shared/configs/db';
 
 const app = new App([userController, authController]);
 
 const debug = debugLib('eco-learn:server');
 
-connectDb(DB_URI);
+// connectDb(DB_URI);
+const database = new DatabaseFactory(connectPgDb);
+(async function (uri: string) {
+  await database.connect(uri);
+})(DB_URI);
 
 const server = http.createServer(app.app);
 // Get port from environment and store in express

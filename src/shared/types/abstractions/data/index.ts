@@ -51,3 +51,7 @@ export interface IDataRepo<T> {
     query: FilterQuery<T>
   ): Promise<IfAny<T, any, Document<unknown, {}, T> & Require_id<T>> | null>;
 }
+
+export interface IDb {
+  connect(uri?: string): Promise<void>;
+}

@@ -1,6 +1,6 @@
 // database connection
 import mongoose from 'mongoose';
-import logger from './logs.config';
+import logger from '../logs.config';
 
 const connectDb = async (uri: string) => {
   try {

@@ -11,4 +11,9 @@ export interface IEnv {
   CLOUDINARY_API_SECRET: string;
   CLOUDINARY_CLOUD_NAME: string;
   FIREBASE_STORAGE_BUCKET: string;
+  PG_DB: string;
+  PG_HOST: string;
+  PG_PASSWORD: string;
+  PG_PORT: string;
+  PG_USERNAME: string;
 }
