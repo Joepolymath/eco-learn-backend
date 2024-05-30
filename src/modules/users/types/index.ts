@@ -8,3 +8,8 @@ export interface IUser extends Document {
   password?: string;
   userId?: string;
 }
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
