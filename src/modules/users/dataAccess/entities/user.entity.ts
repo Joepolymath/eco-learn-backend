@@ -3,7 +3,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { Course } from '../../../courses/dataAccess/entities/course.entity';
 
 @Entity('users')
 export class User {
@@ -21,6 +24,10 @@ export class User {
 
   @Column()
   password: string;
+
+  @ManyToMany(() => Course, (course) => course.users)
+  @JoinTable()
+  courses: Course[];
 
   @CreateDateColumn()
   createdAt: Date;
