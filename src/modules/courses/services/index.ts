@@ -18,7 +18,7 @@ import { Choice } from '../dataAccess/entities/choice.entity';
 import { ICourseService } from '../types/abstractions';
 import { User } from '../../users/dataAccess/entities/user.entity';
 import { userRepository } from '../../users/dataAccess/repositories';
-import { ILesson } from '../types/lesson.types';
+import { IGetLesson, ILesson } from '../types/lesson.types';
 
 class CourseServices implements ICourseService {
   constructor(
@@ -118,6 +118,25 @@ class CourseServices implements ICourseService {
     return responseUtils.buildResponse({
       data: savedLesson,
       message: 'Lesson Created',
+    });
+  }
+
+  public async getAllLessons(query: IGetLesson): Promise<IResponse> {
+    const paginationData = {
+      skip: query.skip || 0,
+      limit: query.limit || 0,
+    };
+    delete query.limit;
+    delete query.skip;
+    const dbQuery = { ...query };
+
+    const foundLessons = await this.lessonRepo.find({
+      where: { course: { id: dbQuery.courseId } },
+    });
+
+    return responseUtils.buildResponse({
+      data: foundLessons,
+      message: 'Lessons Retrieved',
     });
   }
 }
