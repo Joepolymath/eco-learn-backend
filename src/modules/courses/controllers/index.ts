@@ -13,6 +13,7 @@ export default class CourseController implements Controller {
     this.createCourse = this.createCourse.bind(this);
     this.getAllCourses = this.getAllCourses.bind(this);
     this.enrollCourse = this.enrollCourse.bind(this);
+    this.createLesson = this.createLesson.bind(this);
     this.loadRoutes();
   }
 
@@ -23,6 +24,13 @@ export default class CourseController implements Controller {
       `${this.path}/enrol`,
       this.authMiddlewares.authenticate,
       this.enrollCourse
+    );
+
+    // lessons
+    this.router.post(
+      `${this.path}/lessons`,
+      this.authMiddlewares.authenticate,
+      this.createLesson
     );
   }
 
@@ -51,6 +59,17 @@ export default class CourseController implements Controller {
   public async enrollCourse(req: IRequest, res: Response, next: NextFunction) {
     try {
       const data = await this.courseServices.enrollCourse(req.body, req.user);
+      return res
+        .status(data.statusCode)
+        .json({ ...data, message: data.message });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async createLesson(req: IRequest, res: Response, next: NextFunction) {
+    try {
+      const data = await this.courseServices.createLesson(req.body);
       return res
         .status(data.statusCode)
         .json({ ...data, message: data.message });

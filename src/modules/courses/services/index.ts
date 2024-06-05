@@ -18,6 +18,7 @@ import { Choice } from '../dataAccess/entities/choice.entity';
 import { ICourseService } from '../types/abstractions';
 import { User } from '../../users/dataAccess/entities/user.entity';
 import { userRepository } from '../../users/dataAccess/repositories';
+import { ILesson } from '../types/lesson.types';
 
 class CourseServices implements ICourseService {
   constructor(
@@ -100,6 +101,23 @@ class CourseServices implements ICourseService {
     return responseUtils.buildResponse({
       data: updatedCourse,
       message: 'Enrolment Successful',
+    });
+  }
+
+  public async createLesson(payload: ILesson): Promise<IResponse> {
+    const foundCourse = await this.courseRepo.findOne({
+      where: { id: payload.courseId },
+    });
+    if (!foundCourse) {
+      return new HttpException(404, 'Course not found');
+    }
+
+    const newLesson = await this.lessonRepo.create(payload);
+    newLesson.course = foundCourse;
+    const savedLesson = await this.lessonRepo.save(newLesson);
+    return responseUtils.buildResponse({
+      data: savedLesson,
+      message: 'Lesson Created',
     });
   }
 }
