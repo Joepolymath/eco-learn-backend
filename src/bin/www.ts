@@ -9,10 +9,10 @@ import App from '../app';
 // import AuthController from '../modules/auth/auth.controller';
 import connectMongoDb from '../shared/configs/db/mongo.config';
 
-import { userController } from './deps';
+import { userController, courseController } from './deps';
 import DatabaseFactory from '../shared/configs/db';
 
-const app = new App([userController]);
+const app = new App([userController, courseController]);
 
 const debug = debugLib('eco-learn:server');
 

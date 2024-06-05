@@ -11,7 +11,8 @@
     "prepare": "husky",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "typeorm": "typeorm-ts-node-commonjs $npm_config_path"
   },
   "keywords": [],
   "author": "",

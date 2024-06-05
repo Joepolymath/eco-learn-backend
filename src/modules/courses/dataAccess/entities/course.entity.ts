@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   ManyToMany,
   OneToMany,
+  JoinTable,
 } from 'typeorm';
 import { User } from '../../../users/dataAccess/entities/user.entity';
 import { Lesson } from './lesson.entity';
@@ -25,4 +26,7 @@ export class Course {
 
   @OneToMany(() => Lesson, (lesson) => lesson.course)
   lessons: Lesson[];
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

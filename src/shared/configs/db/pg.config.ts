@@ -24,7 +24,7 @@ export const AppDataSource = new DataSource({
   synchronize: true,
   logging: false,
   entities: [User, Course, Lesson, Quiz, Question, Choice],
-  migrations: [],
+  migrations: ['src/shared/configs/db/migrations/**/*.ts'],
   subscribers: [],
 });
 

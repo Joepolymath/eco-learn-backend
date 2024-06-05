@@ -1,27 +1,34 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import Controller from '../../../shared/types/controllers.types';
-import { IUserService } from '../types/abstractions';
-import UserServices from '../services';
+import { ICourseService } from '../types/abstractions';
+import { IRequest } from '../../../shared/types/req.types';
+import middlewares from '../../users/middlewares';
 
-export default class UserController implements Controller {
-  public path: string = '/users';
+export default class CourseController implements Controller {
+  public path: string = '/courses';
   public router: Router = Router();
+  private authMiddlewares = middlewares;
 
-  constructor(private userService: IUserService) {
-    this.signUp = this.signUp.bind(this);
-    this.login = this.login.bind(this);
+  constructor(private courseServices: ICourseService) {
+    this.createCourse = this.createCourse.bind(this);
+    this.getAllCourses = this.getAllCourses.bind(this);
+    this.enrollCourse = this.enrollCourse.bind(this);
     this.loadRoutes();
   }
 
   loadRoutes() {
-    this.router.post(`${this.path}`, this.signUp);
-    this.router.post(`${this.path}/login`, this.login);
+    this.router.post(`${this.path}`, this.createCourse);
+    this.router.get(`${this.path}`, this.getAllCourses);
+    this.router.post(
+      `${this.path}/enrol`,
+      this.authMiddlewares.authenticate,
+      this.enrollCourse
+    );
   }
 
-  public async signUp(req: Request, res: Response, next: NextFunction) {
-    //  console.log({ service: this.userService });
+  public async createCourse(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await this.userService.signUp(req.body);
+      const data = await this.courseServices.createCourse(req.body);
       return res
         .status(data.statusCode)
         .json({ ...data, message: data.message });
@@ -30,9 +37,20 @@ export default class UserController implements Controller {
     }
   }
 
-  public async login(req: Request, res: Response, next: NextFunction) {
+  public async getAllCourses(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await this.userService.login(req.body);
+      const data = await this.courseServices.getAllCourses(req.query);
+      return res
+        .status(data.statusCode)
+        .json({ ...data, message: data.message });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async enrollCourse(req: IRequest, res: Response, next: NextFunction) {
+    try {
+      const data = await this.courseServices.enrollCourse(req.body, req.user);
       return res
         .status(data.statusCode)
         .json({ ...data, message: data.message });

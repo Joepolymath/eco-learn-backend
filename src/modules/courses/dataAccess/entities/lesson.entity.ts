@@ -18,6 +18,12 @@ export class Lesson {
   @Column()
   title: string;
 
+  @Column('json')
+  objectives: string[];
+
+  @Column({ type: 'text', nullable: true })
+  overview: string;
+
   @Column({ type: 'text', nullable: true })
   content: string;
 
