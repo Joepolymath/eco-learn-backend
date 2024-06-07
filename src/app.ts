@@ -20,8 +20,11 @@ class App {
     });
   }
   private initializeMiddlewares() {
+    const corsOptions = {
+      origin: '*',
+    };
+    this.app.use(cors(corsOptions));
     this.app.use(express.json());
-    this.app.use(cors());
     this.app.use(morgan('dev'));
     this.app.use(errorHandler);
   }
