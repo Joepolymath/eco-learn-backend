@@ -4,6 +4,7 @@ import 'colors';
 import morgan from 'morgan';
 import Controller from './shared/types/controllers.types';
 import { errorHandler } from './shared/middlewares/error.middleware';
+import cors from 'cors';
 
 class App {
   app: Application;
@@ -20,6 +21,7 @@ class App {
   }
   private initializeMiddlewares() {
     this.app.use(express.json());
+    this.app.use(cors());
     this.app.use(morgan('dev'));
     this.app.use(errorHandler);
   }

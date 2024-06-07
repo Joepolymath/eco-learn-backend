@@ -114,6 +114,11 @@ class CourseServices implements ICourseService {
 
     const newLesson = await this.lessonRepo.create(payload);
     newLesson.course = foundCourse;
+
+    const newQuiz = await this.quizRepo.create({ lesson: newLesson });
+    newLesson.quiz = newQuiz;
+    await this.quizRepo.save(newQuiz);
+
     const savedLesson = await this.lessonRepo.save(newLesson);
     return responseUtils.buildResponse({
       data: savedLesson,

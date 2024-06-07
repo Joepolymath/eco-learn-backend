@@ -7,6 +7,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Course } from '../../../courses/dataAccess/entities/course.entity';
+import { Quiz } from '../../../courses/dataAccess/entities/quiz.entity';
 
 @Entity('users')
 export class User {
@@ -28,6 +29,10 @@ export class User {
   @ManyToMany(() => Course, (course) => course.users)
   @JoinTable()
   courses: Course[];
+
+  @ManyToMany(() => Quiz, (quiz) => quiz.users)
+  @JoinTable()
+  quizes: Quiz[];
 
   @CreateDateColumn()
   createdAt: Date;
